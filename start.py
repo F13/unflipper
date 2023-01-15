@@ -18,9 +18,29 @@ class MyClient(discord.Client):
                 reply_content = "┬─┬ノ( º \_ ºノ)   " * flips
             await message.reply(reply_content.strip(), mention_author=True)
 
+        elif message.content.count("┻━┻") > 0:
+            reply_content = "Do...do I unflip it? O.o"
+            reply = await message.reply(reply_content)
+            await reply.add_reaction("✅")
+            await reply.add_reaction("❌")
+
+    async def on_raw_reaction_add(self, reactionEvent):
+        if reactionEvent.member == self.user:
+            return
+        channel = client.get_channel(reactionEvent.channel_id)
+        message = await channel.fetch_message(reactionEvent.message_id)
+
+        for reaction in [x for x in message.reactions if x.me]:
+            if reaction.count >= 2:
+                if reaction.emoji == "✅":
+                    flips = message.reference.resolved.content.count("┻━┻")
+                    reply_content = "┬─┬ノ( º \_ ºノ)   " * flips
+                    await message.reference.resolved.reply(reply_content.strip(), mention_author=True)
+            await reaction.remove(self.user)
 
 intents = discord.Intents.default()
 intents.message_content = True
+intents.reactions = True
 
 client = MyClient(intents=intents)
 client.run(os.environ.get('UNFLIPPER_TOKEN'))
