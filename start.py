@@ -30,13 +30,13 @@ class MyClient(discord.Client):
         channel = client.get_channel(reactionEvent.channel_id)
         message = await channel.fetch_message(reactionEvent.message_id)
 
-        for reaction in [x for x in message.reactions if x.me]:
-            if reaction.count >= 2:
-                if reaction.emoji == "✅":
+        if any(x.count >= 2 for x in message.reactions if x.me):
+            for reaction in [x for x in message.reactions if x.me]:
+                if reaction.emoji == "✅" and reaction.count >= 2:
                     flips = message.reference.resolved.content.count("┻━┻")
                     reply_content = "┬─┬ノ( º \_ ºノ)   " * flips
                     await message.reference.resolved.reply(reply_content.strip(), mention_author=True)
-            await reaction.remove(self.user)
+                await reaction.remove(self.user)
 
 intents = discord.Intents.default()
 intents.message_content = True
