@@ -5,6 +5,5 @@ A very silly Discord bot.
 To run:
 
 ```bash
-docker build . -t unflipper
-docker run -d --rm -e "UNFLIPPER_TOKEN=[token]" --name unflipper unflipper
+docker run -d --rm -e "UNFLIPPER_TOKEN=[token]" --name unflipper ghcr.io/f13/unflipper
 ```
