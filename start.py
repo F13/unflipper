@@ -53,7 +53,7 @@ class Unflipper(discord.Client):
         if any(r.count >= 2 for r in reactions):
             for reaction in reactions:
                 if reaction.emoji == "✅" and reaction.count >= 2:
-                    self.unflip(message.reference.resolved)
+                    await self.unflip(message.reference.resolved)
                 # Remove our own reactions, so we stop acting on this message
                 await reaction.remove(self.user)
 
