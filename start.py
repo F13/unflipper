@@ -12,23 +12,21 @@ class Unflipper(discord.Client):
         if message.author.id == self.user.id:
             return
 
-        if self.AUTOFLIP_MSG in message.content:
+        if self.BASIC_TABLE in message.content:
             if message.author.id == 224697402383138817:
                 await message.reply("Fuck you.", mention_author=True)
-            else:
+            elif self.AUTOFLIP_MSG in message.content:
                 await self.unflip(message)
-
-        elif self.BASIC_TABLE in message.content:
-            if message.author.id == 224697402383138817:
-                await message.reply("Fuck you.", mention_author=True)
-            reply_content = "Do...do I unflip it? O.o"
-            reply = await message.reply(reply_content)
-            await reply.add_reaction("✅")
-            await reply.add_reaction("❌")
+            else:
+                reply_content = "Do...do I unflip it? O.o"
+                reply = await message.reply(reply_content)
+                await reply.add_reaction("✅")
+                await reply.add_reaction("❌")
 
     async def on_raw_reaction_add(self, reactionEvent):
         if reactionEvent.member == self.user:
             return
+        
         channel = client.get_channel(reactionEvent.channel_id)
         message = await channel.fetch_message(reactionEvent.message_id)
         if message.author != self.user:
