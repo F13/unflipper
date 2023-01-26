@@ -39,26 +39,28 @@ class Unflipper(discord.Client):
 
         # Ignore reactions from the bot and the flipper
         if reactionEvent.user_id in [self.user.id, message.reference.resolved.author.id]:
-            self.logger.debug("Ignoring reaction \"{}\" on message {} due to reactor ({})".format(
-                emoji, message.id, reactionEvent.member.name))
+            self.logger.debug(f"Ignoring reaction \"{emoji}\" on message {message.id}" +
+                              f"due to reactor ({reactionEvent.member.name})")
             return
 
         # Ignore reactions that we did not prompt
         reaction = discord.utils.get(message.reactions, emoji=emoji)
         if not reaction or not reaction.me:
-            self.logger.debug("Ignoring reaction \"{}\" on message {} because it was unprompted".format(
-                emoji, message.id))
+            self.logger.debug(f"Ignoring reaction \"{emoji}\" on message {message.id} because it was unprompted")
             return
 
         if emoji == "✅":
-            self.logger.debug("Unflipping message {} from {} due to reaction from {}".format(
-                message.reference.resolved.id, message.reference.resolved.author.name, reactionEvent.member.name))
+            self.logger.debug(f"Unflipping message {message.reference.resolved.id}" +
+                              f"from {message.reference.resolved.author.name} due to reaction" +
+                              f"from {reactionEvent.member.name}")
             await self.unflip(message.reference.resolved)
         elif emoji == "❌":
-            self.logger.debug("Ignoring message {} from {} due to reaction from {}".format(
-                message.reference.resolved.id, message.reference.resolved.author.name, reactionEvent.member.name))
+            self.logger.debug(f"Ignoring message {message.reference.resolved.id}" +
+                              f"from {message.reference.resolved.author.name} due to reaction" +
+                              f"from {reactionEvent.member.name}")
         else:
-            self.logger.warn("Fallback! Ignoring reaction \"{}\" on message {}, even though it was prompted".format(emoji, message.id))
+            self.logger.warn(f"Fallback! Ignoring reaction \"{emoji}\" on message {message.id}" +
+                              "even though it was prompted")
             return
 
         for r in message.reactions:
