@@ -7,3 +7,5 @@ To run:
 ```bash
 docker run -d --rm -e "UNFLIPPER_TOKEN=[token]" --name unflipper ghcr.io/f13/unflipper
 ```
+
+`UNFLIPPER_TOKEN_FILE` is also supported for use with Docker secrets.
